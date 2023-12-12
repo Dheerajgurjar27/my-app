@@ -1,0 +1,296 @@
+<html>
+<head>
+  <style>
+    @page {
+      size: letter portrait;
+      @frame header_frame {
+        /* Static frame */
+        -pdf-frame-content: header_content;
+        left: 20pt;
+        top: 20pt;
+        right: 20pt;
+      }
+      @frame content_frame {
+        /* Content Frame */
+        left: 20pt;
+        top: 100pt;
+        bottom: 20pt;
+        right: 20pt;
+      }
+      @frame footer_frame {
+        /* Static frame */
+        -pdf-frame-content: footer_content;
+        left: 20pt;
+        top: 772pt;
+        right: 20pt;
+      }
+    }
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      margin: 0;
+      margin: 0;
+      font-family: 'Arial';
+      font-size: 14px;
+      line-height: 20px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    .container {
+      padding-top: 20px;
+    }
+    .header .logo img {
+      margin-right: 20px;
+    }
+    .heading h2 {
+      color: #582978;
+    }
+    .align-items-center .right h3 {
+      font-weight: 100;
+    }
+    .right p {
+      margin-left: 56px;
+    }
+    .main-page-heading h1 {
+      font-size: 18px;
+    }
+    .header {
+      border-bottom: 2px solid #ccc;
+    }
+    .container {
+      max-width: 96%;
+      margin: auto;
+    }
+    .primary {
+      color: #582978;
+    }
+    .footer {
+      -pdf-keep-with-next: false;
+    }
+  </style>
+  <head>
+  <body>
+    <div id="header_content">
+      {% if parish_name == "lafayette" %}
+      <div>
+      <table style="height:100px">
+        <tr>
+          <td style="text-align:right;">
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+      <div class="container">
+        <div class="data-table">
+          <table style="width:100%;">
+            <tr>
+              <td>
+                <div class="logo">
+                  <table>
+                    {% if parish_name != "lafayette" %}
+                    <tr>
+                      <td style="width: 80px;">
+                        <img src="{{ site_settings.logo.path }}" alt="logo">
+                      </td>
+                      <td style="padding-left: 25px;">
+                        <div class="heading">
+                          <h2 style="margin: 0 0 5px; padding: 0;">{{ site_settings.title }}</h2>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% if parish_name == "lafayette" %}
+                    {% endif %}
+                  </table>
+                </div>
+              </td>
+              <td style="text-align:right">
+                <div class="right">
+                  {% if parish_name != "lafayette" %}
+                    <h3
+                      style="margin: 0; padding:0; margin-bottom:5px;font-family: 'Roboto', sans-serif;font-weight: 400;">{{ site_settings.address }}</h3>
+                  {% endif %}
+                  <span>Date: {{ current_date }}</span>
+                  <h1 style="margin: 0; padding:0;margin-bottom:0;font-size: 25px; font-weight: 500;"> REDEMPTION BILL
+                  </h1>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="footer_content">
+      <table style="width:100%">
+        <tr>
+          <td style="text-align:right;">
+            Page <pdf:pagenumber> of <pdf:pagecount>
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% if parish_name == "lafayette" %}
+      <table style="height: 50px">
+        <tr>
+          <td style="text-align:right;">
+          </td>
+        </tr>
+      </table>
+    {% endif %}
+    <table style="width:100%;">
+      <tr>
+        <td>
+          <p style=" line-height: 20px;">
+            <br><b>Parcel Number#: -</b> <br> {{ data.0.property_detail.parcel_number }}
+          </p>
+        </td>
+        <td style="text-align:right">
+          <p style="line-height: 20px;"> {{ data.0.sales.0.seller_name }} <br>{{ data.0.sales.0.seller_address }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p style=" line-height: 20px;">
+            <br><b>Tax Notice#: -</b> <br> {{ data.0.property_detail.tax_notice_number }}
+          </p>
+        </td>
+        <td style="text-align:right">
+          <p style="line-height: 20px;"> <br><b>Buyer Information</b> <br> {{ data.0.sales.0.bidder_name }} <br>
+            {{ data.0.sales.0.bidder_address }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p style=" line-height: 20px;">
+            <br> <b>Physical Address: -</b> <br>{{ data.0.property_detail.address }}
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="height:20px"></td>
+      </tr>
+    </table>
+    {% for bill in data %}
+    <table style="width:100%; margin-bottom:15px;" cellpadding="3">
+      <thead>
+        <tr style="background-color:#f2f2f2; font-size: 12px; font-weight:bold; text-align: left;">
+          <th style="padding-left: 5px; font-weight: bold; color:#000;  padding-top:8px; text-align: left;">Year:
+            {{ bill.year }}</th>
+          <th style="font-weight: bold; color:#000;  padding-top:8px; text-align: left; width:100px; "></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            <b>Transaction Types</b>
+          </td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            <b>Amount</b>
+          </td>
+        </tr>
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            OriginalTaxes</td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ bill.original_taxes.amount|floatformat:"2g" }}</td>
+        </tr>
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            Interest</td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ bill.interest|floatformat:"2g" }}</td>
+        </tr>
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            Payment Adjustment</td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ bill.payment_adjustment|floatformat:"2g" }}</td>
+        </tr>
+        {% for transaction_breakdown in bill.transaction_breakdowns %}
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          {% if transaction_breakdown.transaction_type__name %}
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            {{ transaction_breakdown.transaction_type__name }}</td>
+          {% else %}
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            &nbsp;</td>
+          {% endif %}
+          {% if transaction_breakdown.amount %}
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ transaction_breakdown.amount|floatformat:"2g" }}</td>
+          {% else %}
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            &nbsp;</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        {% for redemption_fee in bill.redemption_fees %}
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            {{ redemption_fee.name }}</td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ redemption_fee.amount|floatformat:"2g" }}</td>
+        </tr>
+        {% endfor %}
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            Penalties Due</td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ bill.penalties_due|floatformat:"2g" }}</td>
+        </tr>
+        <tr style="background-color:#fff; line-height:14px; font-size:12px;">
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            New Interest</td>
+          <td
+            style="padding-left: 5px; border-top: #ccc solid 1px; border-bottom: #ccc solid 1px; vertical-align:middle;padding-top:5px;">
+            ${{ bill.new_interest|floatformat:"2g" }}</td>
+        </tr>
+        <tr style="background-color: #F2F2F2 ;">
+          <td style="padding-left: 5px; padding-top:10px;"><b>Total Tax Due</b></td>
+          <td style="padding-top:10px; width:75px;"><b>${{ bill.total_balance_due|floatformat:"2g" }}</b></td>
+        </tr>
+      </tbody>
+    </table>
+    {% endfor %}
+    <table style="width:100%;background-color:#f2f2f2;">
+      <thead style="border: solid #D9D7D7 ;">
+        <tr style="background-color: #F2F2F2 ;">
+          <td style="padding-left: 5px; padding-top:10px;"><b>Total Tax Due</b></td>
+          <td style="padding-top:10px; width:75px;"><b>${{ grand_total_balance_due|floatformat:"2g" }}</b></td>
+        </tr>
+      </thead>
+    </table>
+    <div>
+      <p> Ward: <span style="font-weight: 100;">{{ data.0.property_detail.ward.name }}</span> </p>
+      <p> Legal Description: <span style="font-weight: 100;"> <br>
+          {% for bill in data %}
+          {% for legal in bill.legal_description %}
+          {{ legal }} <br>
+          {% endfor %}
+          {% endfor %}
+        </span> </p>
+    </div>
+  </body>
+</html>
